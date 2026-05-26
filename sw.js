@@ -4,7 +4,7 @@
    so the full app shell + all flipbook plates are precached on install.
    ========================================================================== */
 
-const CACHE_VERSION = 'leia-v8';
+const CACHE_VERSION = 'leia-v9';
 const APP_SHELL = [
   './',
   './index.html',

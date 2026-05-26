@@ -1020,7 +1020,9 @@
     }
     /* Boat wrapper is the positioning context for the floating instruments. */
     .sim-boat-wrap { position: relative; }
-    /* Instruments float as a HUD bar over the top of the boat canvas. */
+    /* Instruments float as a HUD bar over the top of the boat canvas.
+       align-items:flex-start keeps the cards their natural height instead of
+       stretching to fill the whole canvas. */
     .sim-dash-meters {
       position: absolute;
       top: 10px;
@@ -1028,6 +1030,7 @@
       right: 10px;
       z-index: 5;
       display: flex;
+      align-items: flex-start;
       gap: 8px;
       justify-content: center;
       pointer-events: none;
