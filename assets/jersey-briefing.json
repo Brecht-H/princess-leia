@@ -1,0 +1,154 @@
+{
+  "steden_onderweg": [
+    {
+      "stad": "Saint-Malo",
+      "when": "Za 6 – Ma 8 jun · 2 nachten · Hotel des Abers",
+      "parkeren": "Paul Féval P14 (P+R) — Avenue du Président Wilson · ± €3,30 per 24u · EV-laders 7 kW Type 2 · Gratis shuttle naar Intra Muros (tot ±20:00–22:00)",
+      "restaurants": [
+        "Cargo Culte — huiselijke sfeer, ideaal voor groepen",
+        "Crêperie La Touline — authentiek, mooi terras",
+        "Le Corps de Garde — op de wallen met uitzicht"
+      ],
+      "bezienswaardigheden": [
+        "Stadswallen wandelen — 1u72 km rondje rond Intra Muros",
+        "Fort National (alleen bij eb bereikbaar)",
+        "Cathédrale Saint-Vincent",
+        "Plage du Sillon — strand voor zonsondergang",
+        "Île du Grand Bé (graf van Chateaubriand, bij eb)"
+      ],
+      "restaurants_label": "Restaurants (Intra Muros)",
+      "bezienswaardigheden_label": "Top 5 doen"
+    },
+    {
+      "stad": "St Helier, Jersey",
+      "when": "Ma 8 – Wo 10 jun + Zo 14 jun · zonder auto · cursus 10–14 jun aan boord",
+      "notes": "Je hebt circa 2 hele dagen vrije tijd op Jersey buiten de cursus om — maandagmiddag 8 jun (aankomst), dinsdag 9 jun (welcome-briefing pas 18:00), en zondagmiddag 14 jun (cursus klaar ±16:00). Geen auto: bus & lopen.",
+      "vervoer_en_tip": "LibertyBus — alle bussen vertrekken vanaf Liberation Station, naast de marina. Dagkaart ~£8. Cursus-klaar 14 juni: optie extra nacht aan boord (£50 via Go-Sail) i.p.v. nog een hotel zoeken — zie kader bij §1 Reisplan. Go-Sail tip: The Shells in de marina · 30 sec van het vertrekpunt · code WATERTAXIADY → 10%",
+      "restaurants": [
+        "Quayside Bistro — terras aan de marina, verse vis",
+        "Pêtchi — houtvuur, reserveren aan te raden",
+        "Lifeboat Cafe (Albert Pier) — super dichtbij, casual"
+      ],
+      "bezienswaardigheden": [
+        "Jersey Museum & Art Gallery — eilandgeschiedenis, 10 min lopen vanaf de marina",
+        "Elizabeth Castle — kasteel in zee, bereikbaar te voet (bij eb) of met amfibie-shuttle",
+        "St Helier Central Market — Victoriaanse markthal, lokale lekkernijen",
+        "Jersey War Tunnels — WWII bunker-complex, bus #8/#28 vanaf Liberation Station (~25 min)",
+        "Corbière Lighthouse — iconische vuurtoren op de westpunt, bus #12/#22 (~40 min) + korte wandeling"
+      ],
+      "restaurants_label": "Restaurants (dichtbij de boot)",
+      "bezienswaardigheden_label": "Top 5 doen (zonder auto)"
+    },
+    {
+      "stad": "Honfleur",
+      "when": "Ma 15 – Di 16 jun · 1 nacht · A la Terrasse coeur Honfleur",
+      "restaurants": [
+        "Les Deux Ponts — schaal fruits de mer, uitzicht op boten, vlak naast Vieux Bassin",
+        "Au P'tit Mareyeur — Honfleur matelote (visstoof), warm en authentiek",
+        "Le Bistrot des Artistes — huiselijk, alles zelfgemaakt incl. brood",
+        "La Fleur de Sel — gastronomisch, opvallende service"
+      ],
+      "restaurants_note": "Sleutels van het appartement liggen bij de receptie op locatie — bel 06 14 29 78 26 als je later dan 20:00 aankomt.",
+      "bezienswaardigheden": [
+        "Vieux Bassin — de iconische haven met smalle gekleurde huizen, magisch in de avond",
+        "Église Sainte-Catherine — grootste houten kerk van Frankrijk, gebouwd door scheepsbouwers",
+        "La Lieutenance — laatste vestingfragment + 360° terras over Honfleur",
+        "Chapelle Notre-Dame de Grâce — 17e-eeuwse kapel op een heuvel, panorama over Seine-estuarium",
+        "Musée Eugène Boudin — 2.500 schilderijen incl. Monet en Boudin (of Maisons Satie als muziek je trekt)"
+      ],
+      "bezienswaardigheden_note": "Alles binnen 10–15 min lopen vanaf het appartement — Honfleur is compact.",
+      "restaurants_label": "Restaurants",
+      "bezienswaardigheden_label": "Top 5 doen"
+    },
+    {
+      "stad": "Rouen",
+      "when": "Di 16 – Wo 17 jun · 1 nacht · Hôtel Cardinal (centrum)",
+      "parkeren": "Geen eigen hotelparking — historisch centrum tegenover de kathedraal. Opéra Parking · 350m, door hotel aanbevolen. Alternatief: Parking Palais de Justice (Q-Park) — €2 avondtarief 19:00–03:00.",
+      "restaurants": [
+        "L'Odas — Michelin-ster, mystery tasting 5/7/9-gangen, daken-uitzicht op kathedraal",
+        "La Couronne (Place du Vieux Marché) — oudste auberge van Frankrijk (sinds 1345), klassiek",
+        "Goût — gastronomisch maar casual, vlak bij de kathedraal, €10–20 pp",
+        "Dame Cakes — theesalon met uitzicht op de kathedraal, voor een pauze",
+        "La Galerie — vis & schaaldieren bij Vieux Marché"
+      ],
+      "bezienswaardigheden": [
+        "Cathédrale Notre-Dame — gotische gevel die Monet 30× schilderde, recht tegenover je hotel",
+        "Gros-Horloge — 14e-eeuwse klokkentoren over de hoofdstraat, klim op voor uitzicht",
+        "Historial Jeanne d'Arc — interactief museum waar haar proces plaatsvond, naast de kathedraal",
+        "Place du Vieux-Marché — waar Jeanne werd terechtgesteld, met de moderne Sainte-Jeanne-d'Arc-kerk",
+        "Aître Saint-Maclou — middeleeuws knekelhuis met houtsnijwerk van schedels en botten"
+      ],
+      "bezienswaardigheden_note": "Compact centrum — alles binnen 10 min lopen. Half dag is genoeg, vol dag = ruim.",
+      "restaurants_label": "Restaurants (historisch centrum)",
+      "bezienswaardigheden_label": "Top 5 doen"
+    }
+  ],
+  "praktisch": {
+    "packing_list_title": "Officiële Go-Sail Packing List",
+    "packing_list": [
+      "Zeilkleding / waterproofs (of huren via Go-Sail)",
+      "Oude trainers (géén zwarte zolen — laten strepen na)",
+      "Laagjes, fleece, sweatshirt",
+      "Zwemkleding + handdoek",
+      "Slaapzak + kussen (of huren)",
+      "Kleine zaklamp / hoofdlamp",
+      "Zonnecrème, hoed, zonnebril",
+      "Paspoort + pasfoto's (voor het certificaat)",
+      "Euro's én Britse ponden (Jersey = £)",
+      "Persoonlijke medicatie (in een zakje)"
+    ],
+    "packing_tip": "Tip: neem zo min mogelijk mee — een zachte zeilzak, géén harde koffer. De boot moet netjes blijven en stuwruimte is beperkt.",
+    "jersey_weer": "Jersey heeft een van de grootste getijverschillen ter wereld — tot ~12 meter — met sterke stromen. Juni is mild (15–19°C), maar op het water kan het fris en nat zijn, vooral 's avonds en tijdens het nachtzeilen. Goede zeilkleding plus laagjes zijn essentieel.",
+    "aan_boord": [
+      "1 toilet aan boord — gebruik ook de marinedouches",
+      "Je helpt mee met koken en schoonmaken — onderdeel van crew zijn",
+      "Nachtzeilen staat meestal op woensdag gepland",
+      "Extra nacht aan boord ná de cursus mogelijk: £50, afhankelijk van beschikbaarheid (vraag Go-Sail tijdig)"
+    ]
+  },
+  "tijdens_de_cursus": {
+    "boot": {
+      "naam": "Jullie boot — Princess Leia",
+      "details": [
+        "Type: Jeanneau Sun Odyssey 380 (bouwjaar 2023)",
+        "Lengte: 38 voet (~11,6 m)",
+        "Bemanning: 7 opvarenden + 1 instructeur",
+        "Bijzonder: dubbel roer en twee stuurposities, brede romp",
+        "Karakter: sportief maar zeer makkelijk te zeilen — een prettige boot om op te leren"
+      ],
+      "note": "Go-Sails vaste trainings- en boatclub-jacht."
+    },
+    "intro": "Hoe de week verloopt",
+    "items": [
+      "Maandag 8 juni — Aankomst Jersey, ontspannen dag, settelen.",
+      "Dinsdag 9 juni, 18:00 — Welkom-briefing aan boord (Albert Pier).",
+      "Woensdag 10 t/m zondag 14 juni — 5 dagen / 4 nachten aan boord. Je vaart naar verschillende havens en ankerplaatsen van de Kanaaleilanden en de Franse kust, met één nacht zeilen (weersafhankelijk)."
+    ],
+    "facts": [
+      "5:1 — cursisten per instructeur",
+      "Eten inbegrepen — aan boord — je kookt zelf mee",
+      "1× aan wal — minstens één diner in een restaurant"
+    ],
+    "wat_de_cursus_is": "Wat de Competent Crew cursus is: de eerste praktische trede van de RYA-ladder. Je leert geen boot navigeren als skipper — je leert een nuttig, zelfstandig bemanningslid te zijn: meehelpen met zeilen hijsen en trimmen, sturen op kompaskoers, lijnen werpen en beleggen, veilig bewegen aan dek, wacht lopen, knopen, nautische termen en de basis van man-over-boord. Geen voorkennis nodig (vanaf 12 jaar). Aan het eind krijg je het RYA Competent Crew certificaat, een ingevuld logboek, én automatisch Go-Sail Crew-lidmaatschap."
+  },
+  "na_de_cursus": {
+    "intro": "Je wordt automatisch Go-Sail Crew member met gratis punten voor races. De gebruikelijke volgende stap is RYA Day Skipper (theorie + praktijk) — daar leer je zelf een boot voeren.",
+    "items": [
+      "Contact Go-Sail.je:",
+      "Nigel Coxshall (Director) — +44 7797 792858 — nigel@go-sail.je",
+      "Max Boleat (General Manager) — +44 7700 806552 — max@go-sail.je",
+      "L'Ecluse, Le Chemin des Hougues, St Mary, Jersey JE3 3BE"
+    ]
+  },
+  "final_checklist": [
+    "Overnachting Jersey boeken (8/9 juni + 14 juni) — check The Shells, code WATERTAXIADY",
+    "Hotel Saint-Malo 15 juni boeken",
+    "Ferry Saint-Malo ↔ Jersey boeken (8 + 15 juni)",
+    "Joining information pack van Go-Sail doorlezen",
+    "Knopen dagelijks oefenen (8 stuks)",
+    "Zeilkleding regelen (kopen of huren via Go-Sail)",
+    "Auto parkeren Saint-Malo (Paul Féval P14)",
+    "Euro's + Britse ponden + paspoort + pasfoto's + zaklamp",
+    "Weer-apps + Odido roaming check (Jersey valt buiten EU-roaming)"
+  ]
+}
