@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Karen & Allaert • Princess Leia Boat Companion</title>
   <meta name="description" content="Interactieve zeilmanual en reisonboarding voor Karen & Allaert's RYA Competent Crew avontuur in Jersey aan boord van Princess Leia.">
   <link rel="icon" type="image/svg+xml" href="assets/princess_leia_deck.svg">
@@ -68,6 +68,9 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Match the body cream behind the Dynamic Island / home indicator so
+       viewport-fit=cover shows no bare status-bar strip on iPhone. */
+    html { background-color: #f5efe6; }
     body {
       background-color: var(--bg-deep);
       background-image: radial-gradient(circle at 50% 50%, #fdfbf7 0%, #f5efe6 100%);
@@ -180,7 +183,7 @@
        ========================================================================== */
 
     header {
-      height: var(--header-height);
+      min-height: var(--header-height);
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -188,7 +191,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      /* Pad past the Dynamic Island / notch (top) and rounded corners (sides)
+         on iPhone. viewport-fit=cover makes these env() values non-zero;
+         without this the title is crammed under the Dynamic Island. */
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-left: calc(24px + env(safe-area-inset-left, 0px));
+      padding-right: calc(24px + env(safe-area-inset-right, 0px));
+      padding-bottom: 0;
       z-index: 100;
       position: sticky;
       top: 0;
@@ -963,6 +972,11 @@
       gap: 24px;
       height: calc(100vh - var(--header-height) - 100px);
     }
+    /* Desktop grid placement: boat top-left, controls span the right column,
+       points-of-sail plate under the boat in the left column. */
+    .simulator-layout > .sim-boat-col { grid-column: 1; grid-row: 1; }
+    .simulator-layout > .sim-controls-panel { grid-column: 2; grid-row: 1 / span 2; }
+    .simulator-layout > #sim-pos-plate-wrap { grid-column: 1; grid-row: 2; }
 
     @media (max-width: 968px) {
       .simulator-layout {
@@ -2069,9 +2083,48 @@
       /* Chat FAB is smaller and tucked into the corner so it stops covering
          the simulator meters / trim controls. Each section also gets bottom
          room so its last row is never hidden behind the floating button. */
-      .coach-panel-trigger { width: 48px; height: 48px; bottom: 16px; right: 16px; }
+      .coach-panel-trigger {
+        width: 48px; height: 48px;
+        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        right: calc(16px + env(safe-area-inset-right, 0px));
+      }
       .coach-panel-trigger svg { width: 22px; height: 22px; }
-      .app-section { padding-bottom: 88px; }
+      .app-section { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+
+      /* Schip Tour tabs: on phone the 5 pills wrapped and overlapped the
+         progress bar behind them. Turn the pill group into a single-row
+         horizontally-scrollable strip so each label stays on one line and
+         the user simply swipes sideways between Overzicht / Dek / Binnen /
+         Cockpit / Onder Zeil. */
+      #tour-plate-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        border-radius: 14px;
+        scrollbar-width: none;
+      }
+      #tour-plate-tabs::-webkit-scrollbar { display: none; }
+      #tour-plate-tabs .toggle-pill {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+      /* The tour controls sit in their own card so they never bleed onto the
+         section/progress header above them. */
+      .map-view-controls { margin-bottom: 4px; }
+
+      /* Wind Simulator integration on phone: previously the boat canvas filled
+         the whole screen, so you saw "only the boat" and had to scroll a full
+         page to reach "only the controls". Cap the boat to ~42vh and pull the
+         controls right underneath it so the boat + dial + presets read as one
+         connected instrument. The big points-of-sail reference plate is
+         secondary, so it drops to the bottom of the stack. */
+      .simulator-layout { display: flex !important; flex-direction: column !important; gap: 14px; height: auto !important; }
+      .simulator-layout > .sim-boat-col { order: 1; }
+      .simulator-layout > .sim-controls-panel { order: 2; }
+      .simulator-layout > #sim-pos-plate-wrap { order: 3; }
+      .simulator-viewport { height: 42vh; min-height: 260px; padding: 12px; }
+      .simulator-viewport svg, #wind-sim-svg { max-height: 100%; }
     }
   </style>
 </head>
@@ -2397,17 +2450,14 @@
     <!-- 4. WIND & ZEIL TRIM SIMULATOR -->
     <section class="app-section" id="simulator-section">
       <div class="simulator-layout">
-        
-        <!-- Left: Simulator Canvas with Boat + points-of-sail reference plate -->
-        <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <!-- Left: Simulator Canvas (boat). On desktop the points-of-sail plate
+             sits below it in the left column; on phone the plate drops to the
+             bottom (CSS order) so the controls sit right under the boat. -->
+        <div class="sim-boat-col" style="display:flex; flex-direction:column; gap:14px;">
           <div class="simulator-viewport" id="simulator-viewport-container">
             <!-- Rendered dynamically by windSimulator.js -->
           </div>
-          <figure style="margin:0; cursor:zoom-in;" id="sim-pos-plate-wrap">
-            <img src="assets/flipbook/points_of_sail.jpg" alt="Points of Sail referentie"
-                 id="sim-pos-plate" style="width:100%; height:auto; border-radius:var(--radius-md); box-shadow:var(--shadow-premium); display:block;">
-            <figcaption style="font-size:0.74rem; color:var(--text-muted); font-style:italic; text-align:center; margin-top:6px;">Points of Sail — referentie (tik om te vergroten)</figcaption>
-          </figure>
         </div>
 
         <!-- Right: Control Sliders and Feedback panel -->
@@ -2482,6 +2532,15 @@
             <div id="sim-todo" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border-glass); font-family: var(--font-accent); font-weight:600; color:var(--accent); font-size:0.84rem;"></div>
           </div>
         </div>
+
+        <!-- Points-of-sail reference plate. Direct child of simulator-layout so
+             CSS order can place it: under the boat on desktop, at the very
+             bottom on phone (after the controls). -->
+        <figure style="margin:0; cursor:zoom-in;" id="sim-pos-plate-wrap">
+          <img src="assets/flipbook/points_of_sail.jpg" alt="Points of Sail referentie"
+               id="sim-pos-plate" style="width:100%; height:auto; border-radius:var(--radius-md); box-shadow:var(--shadow-premium); display:block;">
+          <figcaption style="font-size:0.74rem; color:var(--text-muted); font-style:italic; text-align:center; margin-top:6px;">Points of Sail — referentie (tik om te vergroten)</figcaption>
+        </figure>
 
       </div>
     </section>
