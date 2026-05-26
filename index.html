@@ -628,9 +628,10 @@
 
     /* Map Toggle Button Pill Groups */
     .map-view-controls {
-      position: absolute;
-      top: 16px;
-      left: 16px;
+      /* In normal flow (NOT absolute) so the tab strip sits cleanly above the
+         plate instead of floating over it. The .interactive-viewport flex
+         column handles the spacing. */
+      position: relative;
       z-index: 20;
       display: flex;
       gap: 12px;
@@ -2166,6 +2167,13 @@
       .coach-panel-trigger svg { width: 22px; height: 22px; }
       .app-section { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
 
+      /* Free up vertical space on phone: the global progress bar and the
+         iCloud-sync badge aren't needed here and pushed the content (e.g. the
+         simulator meters) out of view. Elements stay in the DOM so the JS that
+         updates them keeps working. */
+      header .progress-bar-container,
+      header .status-badge { display: none; }
+
       /* Schip Tour tabs: on phone the 5 pills wrapped and overlapped the
          progress bar behind them. Turn the pill group into a single-row
          horizontally-scrollable strip so each label stays on one line and
@@ -2184,9 +2192,9 @@
         flex: 0 0 auto;
         white-space: nowrap;
       }
-      /* The tour controls sit in their own card so they never bleed onto the
-         section/progress header above them. */
-      .map-view-controls { margin-bottom: 4px; }
+      /* Detail panel scrolls into view on select; offset for the sticky header
+         so its title isn't hidden underneath. */
+      #map-detail-panel { scroll-margin-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 8px); }
 
       /* Wind Simulator integration on phone: previously the boat canvas filled
          the whole screen, so you saw "only the boat" and had to scroll a full
@@ -2261,6 +2269,10 @@
       <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
       Sailing Academy
     </button>
+    <button class="tab-link" data-tab="woordenboek">
+      <svg viewBox="0 0 24 24"><path d="M3 5h12v14H3z"></path><path d="M15 7h6v12h-6"></path><line x1="6" y1="9" x2="12" y2="9"></line><line x1="6" y1="13" x2="12" y2="13"></line></svg>
+      Woordenboek
+    </button>
     <button class="tab-link" data-tab="simulator">
       <svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path></svg>
       Wind Simulator
@@ -2301,6 +2313,7 @@
       <button class="drawer-link" data-tab="map">⛵ Schip Tour <span class="drawer-hint">naslag</span></button>
       <button class="drawer-link" data-tab="day-at-sea">🕐 Dag op Zee <span class="drawer-hint">trainingsdag</span></button>
       <button class="drawer-link" data-tab="lessons">📖 Sailing Academy <span class="drawer-hint">theorie</span></button>
+      <button class="drawer-link" data-tab="woordenboek">📕 Zeilwoordenboek <span class="drawer-hint">NL / EN</span></button>
       <button class="drawer-link" data-tab="simulator">💨 Wind Simulator</button>
       <button class="drawer-link" data-tab="knots">🪢 Knopentrainer</button>
       <button class="drawer-link" data-tab="jersey">🏝️ Expeditie Jersey</button>
@@ -2518,17 +2531,19 @@
           <button class="btn-primary" id="lesson-btn-next">Volgende</button>
         </div>
 
-        <!-- Bilingual sailing glossary (moved here from Expeditie Jersey) -->
-        <div class="glass-panel" style="padding:22px; margin-top:24px; background: rgba(255,255,255,0.7);">
-          <div style="margin-bottom:14px;">
-            <h3 class="glow-text-cyan">Meertalig Zeilwoordenboek</h3>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">Kerntermen die je tijdens de RYA-training aan boord hoort — Nederlands &amp; Engels.</p>
-          </div>
-          <div class="glossary-items-grid" id="academy-glossary-list">
-            <!-- rendered by app.js -->
-          </div>
-        </div>
+      </div>
+    </section>
 
+    <!-- 3b. MEERTALIG ZEILWOORDENBOEK (eigen tab, na Sailing Academy) -->
+    <section class="app-section" id="woordenboek-section">
+      <div class="glass-panel" style="padding:22px; background: rgba(255,255,255,0.7); max-width:900px; margin:0 auto;">
+        <div style="margin-bottom:14px;">
+          <h3 class="glow-text-cyan">Meertalig Zeilwoordenboek</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Kerntermen die je tijdens de RYA-training aan boord hoort — Nederlands &amp; Engels. Zodat je niet blanco aankomt.</p>
+        </div>
+        <div class="glossary-items-grid" id="academy-glossary-list">
+          <!-- rendered by app.js -->
+        </div>
       </div>
     </section>
 
@@ -4093,6 +4108,15 @@
           else speedCol = '#b91c1c';
           speedDisplay.style.color = speedCol;
           speedDisplay.style.transition = 'color 0.3s';
+          // Make the whole speed meter card the headline "good/bad" signal at
+          // the top: tinted background + coloured top border so it's visible
+          // without reading the number.
+          const speedCard = speedDisplay.closest('.sim-meter-card');
+          if (speedCard) {
+            speedCard.style.borderTop = `3px solid ${speedCol}`;
+            speedCard.style.background = `${speedCol}12`;
+            speedCard.style.transition = 'background 0.3s, border-color 0.3s';
+          }
         }
         if (heelDisplay) heelDisplay.textContent = `${heelAngle}°`;
         if (angleDisplay) angleDisplay.textContent = `${windAngle}°`;
@@ -4253,6 +4277,15 @@
         });
 
         renderKnotStep();
+
+        // On phone the viewer sits below the knot list — scroll it into view
+        // so the selected knot's steps are immediately visible.
+        if (window.matchMedia('(max-width: 968px)').matches) {
+          requestAnimationFrame(() => {
+            document.querySelector('#knots-section .knot-viewer-panel')
+              ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
       }
 
       // Hook into Global Navigation
@@ -5139,7 +5172,7 @@
         } else if (tabId === 'day-at-sea') {
           if (typeof renderTimelineSidebar === 'function') renderTimelineSidebar();
           if (typeof renderActiveStep === 'function') renderActiveStep();
-        } else if (tabId === 'lessons') {
+        } else if (tabId === 'lessons' || tabId === 'woordenboek') {
           renderAcademyGlossary();
         }
 
@@ -5161,6 +5194,7 @@
           'map': 'Schip Tour — Jeanneau 380 (Binnen & Buiten)',
           'day-at-sea': 'Dag op Zee — RYA Praktijk Handboek',
           'lessons': 'Sailing Academy Leerpad',
+          'woordenboek': 'Meertalig Zeilwoordenboek',
           'simulator': 'Interactieve Wind & Trim Simulator',
           'knots': 'Stap-voor-stap Knopentrainer',
           'jersey': 'Expeditie Jersey & RYA Competent Crew',
@@ -5306,6 +5340,14 @@
             calculateOverallProgress();
           });
         });
+
+        // On phone the detail panel sits below the systems list, so a tap would
+        // otherwise leave the new content off-screen. Scroll it into view.
+        if (window.matchMedia('(max-width: 968px)').matches) {
+          requestAnimationFrame(() => {
+            detailPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
       }
 
       function resetDetailPanel() {
