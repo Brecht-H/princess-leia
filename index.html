@@ -985,6 +985,81 @@
       }
     }
 
+    /* First-time simulator instruction popup */
+    .sim-intro-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(18, 22, 28, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .sim-intro-overlay.show { display: flex; }
+    .sim-intro-card {
+      background: var(--bg-card, #fffdf8);
+      border: 1.5px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+      padding: 26px 24px;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    /* ---- Compact dashboard layout (meters top · boat+buttons · trim · plate) ---- */
+    .sim-dash {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .sim-dash-meters {
+      position: static;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+    }
+    .sim-dash-meters .sim-meter-card { flex: 1 1 0; min-width: 0; padding: 10px 8px; }
+    /* Boat centre + point-of-sail buttons on the right */
+    .sim-dash-stage {
+      display: grid;
+      grid-template-columns: 1fr minmax(140px, 200px);
+      gap: 12px;
+      align-items: stretch;
+    }
+    .sim-dash-stage .simulator-viewport { height: 320px; min-height: 0; }
+    .sim-dash-presets {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+    }
+    .sim-dash-presets .sim-preset { width: 100%; }
+    /* Trim row: sliders left, drag-dial right */
+    .sim-dash-trim-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+    }
+    .sim-dash-sliders { display: flex; flex-direction: column; gap: 14px; }
+
+    @media (max-width: 768px) {
+      /* Phone: boat smaller, buttons stay to the right (narrower), trim stacks */
+      .sim-dash-stage { grid-template-columns: 1fr 128px; gap: 8px; }
+      .sim-dash-stage .simulator-viewport { height: 240px; padding: 8px; }
+      .sim-dash-presets .sim-preset { font-size: 0.72rem; padding: 8px 6px; min-height: 40px; }
+      .sim-dash-meters .sim-meter-card h5 { font-size: 0.62rem; }
+      .sim-dash-meters .sim-meter-value { font-size: 1rem; }
+      .sim-dash-trim-row { grid-template-columns: 1fr; gap: 12px; }
+      .sim-dash-dial { margin: 0 auto; }
+    }
+
     .simulator-viewport {
       position: relative;
       display: flex;
@@ -2198,6 +2273,14 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><polygon points="12 11 9 13 12 15 12 11"></polygon></svg>
       Expeditie Jersey
     </button>
+    <button class="tab-link" data-tab="syllabus">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      RYA Syllabus
+    </button>
+    <button class="tab-link" data-tab="checklist">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+      Final Checklist
+    </button>
   </nav>
 
   <!-- ==========================================================================
@@ -2221,6 +2304,8 @@
       <button class="drawer-link" data-tab="simulator">💨 Wind Simulator</button>
       <button class="drawer-link" data-tab="knots">🪢 Knopentrainer</button>
       <button class="drawer-link" data-tab="jersey">🏝️ Expeditie Jersey</button>
+      <button class="drawer-link" data-tab="syllabus">✅ RYA Syllabus <span class="drawer-hint">vaardigheden</span></button>
+      <button class="drawer-link" data-tab="checklist">📋 Final Checklist <span class="drawer-hint">vóór vertrek</span></button>
     </nav>
   </aside>
 
@@ -2449,78 +2534,90 @@
 
     <!-- 4. WIND & ZEIL TRIM SIMULATOR -->
     <section class="app-section" id="simulator-section">
-      <div class="simulator-layout">
+      <!-- First-time instruction popup (dismissible, remembered per device) -->
+      <div class="sim-intro-overlay" id="sim-intro-overlay">
+        <div class="sim-intro-card">
+          <h3 class="glow-text-gold" style="margin-bottom:10px;">Zo werkt de simulator</h3>
+          <ol style="margin:0 0 16px 18px; padding:0; line-height:1.7; font-size:0.92rem; color:var(--text-main);">
+            <li><strong>Kies een windhoek</strong> met de knoppen rechts van de boot (of sleep het rondje onderaan).</li>
+            <li><strong>Trim de zeilen</strong> met de twee schuifregelaars onder de boot.</li>
+            <li>Het <strong>stoplicht</strong> wordt groen als je trim klopt, oranje bijna, rood fout.</li>
+            <li>De <strong>meters bovenaan</strong> tonen snelheid, helling en windhoek — sneller = beter getrimd.</li>
+          </ol>
+          <button class="btn-primary" id="sim-intro-close" style="width:100%;">Begrepen — start</button>
+        </div>
+      </div>
 
-        <!-- Left: Simulator Canvas (boat). On desktop the points-of-sail plate
-             sits below it in the left column; on phone the plate drops to the
-             bottom (CSS order) so the controls sit right under the boat. -->
-        <div class="sim-boat-col" style="display:flex; flex-direction:column; gap:14px;">
-          <div class="simulator-viewport" id="simulator-viewport-container">
-            <!-- Rendered dynamically by windSimulator.js -->
+      <!-- Compact dashboard layout: meters on top, boat centre with the 6
+           point-of-sail buttons to its right, trim controls + drag-dial below,
+           reference plate at the very bottom. -->
+      <div class="sim-dash">
+
+        <!-- 1. Instruments row (above the boat) -->
+        <div class="sim-meters sim-dash-meters">
+          <div class="sim-meter-card">
+            <h5>Bootsnelheid</h5>
+            <div class="sim-meter-value" id="sim-meter-speed">0.0 kn</div>
+          </div>
+          <div class="sim-meter-card">
+            <h5>Helling</h5>
+            <div class="sim-meter-value" id="sim-meter-heel">0°</div>
+          </div>
+          <div class="sim-meter-card">
+            <h5>Windhoek</h5>
+            <div class="sim-meter-value" id="sim-meter-angle">45°</div>
           </div>
         </div>
 
-        <!-- Right: Control Sliders and Feedback panel -->
-        <div class="glass-panel sim-controls-panel" style="background: rgba(255,255,255,0.75);">
-          <div>
-            <h3 class="glow-text-gold">Zeil Trim Console</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Draai aan de windroos om de windhoek te veranderen.</p>
+        <!-- 2. Boat (centre) + point-of-sail buttons (right) -->
+        <div class="sim-dash-stage">
+          <div class="simulator-viewport" id="simulator-viewport-container">
+            <!-- Rendered dynamically by windSimulator.js -->
           </div>
-
-          <!-- Wind direction dial widget -->
-          <div class="dial-group" style="align-items: center; margin: 10px 0;">
-            <label>Sleep de Windrichting (of kies hieronder)</label>
-            <div class="wind-dial-ring" id="sim-wind-dial-ring">
-              <div class="wind-arrow-indicator" id="sim-wind-arrow"></div>
-              <svg viewBox="0 0 100 100" style="width: 40px; height: 40px; stroke: rgba(197, 160, 89, 0.25); fill:none;"><polygon points="50,15 90,85 50,70 10" transform="rotate(0, 50, 50)"></polygon></svg>
-            </div>
-          </div>
-
-          <!-- Quick point-of-sail presets (easier than dragging) -->
-          <div id="sim-presets" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:12px;">
+          <div id="sim-presets" class="sim-dash-presets">
             <button class="sim-preset btn-secondary" data-angle="0">In de wind (0°)</button>
             <button class="sim-preset btn-secondary" data-angle="45">Aan de wind (45°)</button>
             <button class="sim-preset btn-secondary" data-angle="90">Halve wind (90°)</button>
             <button class="sim-preset btn-secondary" data-angle="135">Ruime wind (135°)</button>
             <button class="sim-preset btn-secondary" data-angle="175">Voor de wind (175°)</button>
-            <button class="sim-preset btn-primary" id="sim-gybe-btn">⟳ Gijp (overstag achter)</button>
+            <button class="sim-preset btn-primary" id="sim-gybe-btn">⟳ Gijp</button>
           </div>
+        </div>
 
-          <!-- Real-Time sailing dials -->
-          <div class="sim-meters" style="position: static; justify-content: center; width: 100%;">
-            <div class="sim-meter-card">
-              <h5>Bootsnelheid</h5>
-              <div class="sim-meter-value" id="sim-meter-speed">0.0 kn</div>
-            </div>
-            <div class="sim-meter-card">
-              <h5>Helling</h5>
-              <div class="sim-meter-value" id="sim-meter-heel">0°</div>
-            </div>
-            <div class="sim-meter-card">
-              <h5>Windhoek</h5>
-              <div class="sim-meter-value" id="sim-meter-angle">45°</div>
-            </div>
-          </div>
+        <!-- 3. Trim controls (below the boat): sliders + drag-dial + feedback -->
+        <div class="glass-panel sim-controls-panel sim-dash-controls" style="background: rgba(255,255,255,0.75);">
+          <div class="sim-dash-trim-row">
 
-          <!-- Sliders for Sails sheets -->
-          <div class="slider-container">
-            <div class="slider-header">
-              <span>Grootschoot Trim (Mainsheet)</span>
-              <span id="sim-val-main">15°</span>
+            <!-- Sliders -->
+            <div class="sim-dash-sliders">
+              <div class="slider-container">
+                <div class="slider-header">
+                  <span>Grootschoot Trim (Mainsheet)</span>
+                  <span id="sim-val-main">15°</span>
+                </div>
+                <input type="range" class="sim-slider" id="sim-slider-main" min="0" max="90" value="15">
+              </div>
+              <div class="slider-container">
+                <div class="slider-header">
+                  <span>Fokkenschoot Trim (Jib Sheet)</span>
+                  <span id="sim-val-jib">10°</span>
+                </div>
+                <input type="range" class="sim-slider" id="sim-slider-jib" min="0" max="90" value="10">
+              </div>
             </div>
-            <input type="range" class="sim-slider" id="sim-slider-main" min="0" max="90" value="15">
-          </div>
 
-          <div class="slider-container">
-            <div class="slider-header">
-              <span>Fokkenschoot Trim (Jib Sheet)</span>
-              <span id="sim-val-jib">10°</span>
+            <!-- Drag-dial (rondje) -->
+            <div class="dial-group sim-dash-dial" style="align-items: center;">
+              <label>Sleep de windrichting</label>
+              <div class="wind-dial-ring" id="sim-wind-dial-ring">
+                <div class="wind-arrow-indicator" id="sim-wind-arrow"></div>
+                <svg viewBox="0 0 100 100" style="width: 40px; height: 40px; stroke: rgba(197, 160, 89, 0.25); fill:none;"><polygon points="50,15 90,85 50,70 10" transform="rotate(0, 50, 50)"></polygon></svg>
+              </div>
             </div>
-            <input type="range" class="sim-slider" id="sim-slider-jib" min="0" max="90" value="10">
           </div>
 
           <!-- Trim quality light: green = goed, oranje = bijna, rood = fout -->
-          <div id="sim-trim-status" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius: var(--radius-md); background:#eef1f4; margin-bottom:10px; transition: background 0.3s;">
+          <div id="sim-trim-status" style="display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius: var(--radius-md); background:#eef1f4; margin:12px 0 10px; transition: background 0.3s;">
             <span id="sim-trim-dot" style="width:14px; height:14px; border-radius:50%; background:#94a3b8; flex-shrink:0; box-shadow:0 0 0 4px rgba(148,163,184,0.18);"></span>
             <span id="sim-trim-label" style="font-family: var(--font-accent); font-weight:700; font-size:0.85rem; color:var(--text-main);">Begin met trimmen</span>
           </div>
@@ -2528,14 +2625,12 @@
           <!-- Live dynamic AI feedback advice -->
           <div class="glass-panel" style="padding: 16px; font-size: 0.85rem; border-color: var(--border-active); background: rgba(0, 119, 145, 0.02);">
             <h4 style="color: var(--accent); margin-bottom: 6px; font-size: 0.9rem; font-family: var(--font-accent); font-weight: 700;">Trim Advies Coach:</h4>
-            <div id="sim-coach-text" style="line-height: 1.5; color: var(--text-muted);">Draai aan de windroos om te beginnen.</div>
+            <div id="sim-coach-text" style="line-height: 1.5; color: var(--text-muted);">Kies een windhoek rechts van de boot om te beginnen.</div>
             <div id="sim-todo" style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border-glass); font-family: var(--font-accent); font-weight:600; color:var(--accent); font-size:0.84rem;"></div>
           </div>
         </div>
 
-        <!-- Points-of-sail reference plate. Direct child of simulator-layout so
-             CSS order can place it: under the boat on desktop, at the very
-             bottom on phone (after the controls). -->
+        <!-- 4. Points-of-sail reference plate (bottom) -->
         <figure style="margin:0; cursor:zoom-in;" id="sim-pos-plate-wrap">
           <img src="assets/flipbook/points_of_sail.jpg" alt="Points of Sail referentie"
                id="sim-pos-plate" style="width:100%; height:auto; border-radius:var(--radius-md); box-shadow:var(--shadow-premium); display:block;">
@@ -2625,25 +2720,30 @@
             <div id="jersey-steden"><!-- rendered by app.js --></div>
           </div>
 
-          <!-- RYA Syllabus criteria checklist (apart gehouden, zoals gevraagd) -->
-          <div class="glass-panel" style="padding:24px; background: rgba(255,255,255,0.75);">
-            <div style="margin-bottom:16px;">
-              <h3 style="color:var(--text-main);">RYA Competent Crew Syllabus</h3>
-              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">Kruis af welke vaardigheden jullie tijdens de week beheersen aan boord.</p>
-            </div>
-            <div class="rya-syllabus-items" id="jersey-rya-list">
-              <!-- RYA check rows rendered by app.js -->
-            </div>
-          </div>
-
-          <!-- Final checklist (uit de briefing) -->
-          <div class="glass-panel" style="padding:24px; background: rgba(255,255,255,0.75);">
-            <h3 class="glow-text-cyan" style="margin-bottom:16px;">Final Checklist — vóór vertrek</h3>
-            <div class="rya-syllabus-items" id="jersey-checklist"><!-- rendered by app.js --></div>
-          </div>
-
         </div>
 
+      </div>
+    </section>
+
+    <!-- 8. RYA COMPETENT CREW SYLLABUS (eigen tab) -->
+    <section class="app-section" id="syllabus-section">
+      <div class="glass-panel" style="padding:24px; background: rgba(255,255,255,0.75); max-width:760px; margin:0 auto;">
+        <div style="margin-bottom:16px;">
+          <h3 style="color:var(--text-main);">RYA Competent Crew Syllabus</h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Kruis af welke vaardigheden jullie tijdens de week aan boord beheersen. Voortgang wordt bewaard op dit toestel.</p>
+        </div>
+        <div class="rya-syllabus-items" id="jersey-rya-list">
+          <!-- RYA check rows rendered by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. FINAL CHECKLIST — vóór vertrek (eigen tab) -->
+    <section class="app-section" id="checklist-section">
+      <div class="glass-panel" style="padding:24px; background: rgba(255,255,255,0.75); max-width:760px; margin:0 auto;">
+        <h3 class="glow-text-cyan" style="margin-bottom:6px;">Final Checklist — vóór vertrek</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Loop dit af vóór je naar Jersey vertrekt. Aangevinkte items blijven bewaard.</p>
+        <div class="rya-syllabus-items" id="jersey-checklist"><!-- rendered by app.js --></div>
       </div>
     </section>
 
@@ -5030,7 +5130,11 @@
         // Trigger updates
         if (tabId === 'map') {
           renderSystemsList();
-        } else if (tabId === 'jersey') {
+        } else if (tabId === 'jersey' || tabId === 'syllabus' || tabId === 'checklist') {
+          // renderJerseySection populates the timeline, bookings, the RYA
+          // syllabus list (#jersey-rya-list) and the final checklist
+          // (#jersey-checklist). The latter two now live in their own tabs but
+          // share the same element IDs, so this one call still fills them.
           renderJerseySection();
         } else if (tabId === 'day-at-sea') {
           if (typeof renderTimelineSidebar === 'function') renderTimelineSidebar();
@@ -5041,6 +5145,11 @@
 
         if (tabId === 'map' || tabId === 'simulator' || tabId === 'knots' || tabId === 'day-at-sea') {
           window.dispatchEvent(new Event('resize'));
+        }
+
+        // First visit to the simulator → show the one-time instruction popup.
+        if (tabId === 'simulator' && !localStorage.getItem('leia_sim_intro_seen')) {
+          document.getElementById('sim-intro-overlay')?.classList.add('show');
         }
 
         updateHeaderTitle(tabId);
@@ -5054,7 +5163,9 @@
           'lessons': 'Sailing Academy Leerpad',
           'simulator': 'Interactieve Wind & Trim Simulator',
           'knots': 'Stap-voor-stap Knopentrainer',
-          'jersey': 'Expeditie Jersey & RYA Competent Crew'
+          'jersey': 'Expeditie Jersey & RYA Competent Crew',
+          'syllabus': 'RYA Competent Crew Syllabus',
+          'checklist': 'Final Checklist — vóór vertrek'
         };
         const titleElement = document.getElementById('header-title');
         if (titleElement && titles[tabId]) {
@@ -5491,6 +5602,18 @@
       initKnotsTrainer();
       initAiCoach();
       initDayAtSeaTimeline();
+
+      // Dismiss the one-time simulator instruction popup (remembered per device)
+      document.getElementById('sim-intro-close')?.addEventListener('click', () => {
+        document.getElementById('sim-intro-overlay')?.classList.remove('show');
+        localStorage.setItem('leia_sim_intro_seen', '1');
+      });
+      document.getElementById('sim-intro-overlay')?.addEventListener('click', (e) => {
+        if (e.target.id === 'sim-intro-overlay') {
+          e.currentTarget.classList.remove('show');
+          localStorage.setItem('leia_sim_intro_seen', '1');
+        }
+      });
 
       // Load progress
       calculateOverallProgress();
