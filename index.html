@@ -1018,14 +1018,28 @@
       max-width: 820px;
       margin: 0 auto;
     }
+    /* Boat wrapper is the positioning context for the floating instruments. */
+    .sim-boat-wrap { position: relative; }
+    /* Instruments float as a HUD bar over the top of the boat canvas. */
     .sim-dash-meters {
-      position: static;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 5;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
-      width: 100%;
+      pointer-events: none;
     }
-    .sim-dash-meters .sim-meter-card { flex: 1 1 0; min-width: 0; padding: 10px 8px; }
+    .sim-dash-meters .sim-meter-card {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 8px 6px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
     /* Boat centre + point-of-sail buttons on the right */
     .sim-dash-stage {
       display: grid;
@@ -1033,7 +1047,8 @@
       gap: 12px;
       align-items: stretch;
     }
-    .sim-dash-stage .simulator-viewport { height: 320px; min-height: 0; }
+    .sim-dash-stage .sim-boat-wrap { min-width: 0; }
+    .sim-dash-stage .simulator-viewport { height: 340px; min-height: 0; }
     .sim-dash-presets {
       display: flex;
       flex-direction: column;
@@ -1055,8 +1070,10 @@
       .sim-dash-stage { grid-template-columns: 1fr 128px; gap: 8px; }
       .sim-dash-stage .simulator-viewport { height: 240px; padding: 8px; }
       .sim-dash-presets .sim-preset { font-size: 0.72rem; padding: 8px 6px; min-height: 40px; }
-      .sim-dash-meters .sim-meter-card h5 { font-size: 0.62rem; }
-      .sim-dash-meters .sim-meter-value { font-size: 1rem; }
+      .sim-dash-meters { top: 6px; left: 6px; right: 6px; gap: 5px; }
+      .sim-dash-meters .sim-meter-card { padding: 5px 4px; }
+      .sim-dash-meters .sim-meter-card h5 { font-size: 0.55rem; margin-bottom: 1px; }
+      .sim-dash-meters .sim-meter-value { font-size: 0.9rem; }
       .sim-dash-trim-row { grid-template-columns: 1fr; gap: 12px; }
       .sim-dash-dial { margin: 0 auto; }
     }
@@ -2568,26 +2585,27 @@
            reference plate at the very bottom. -->
       <div class="sim-dash">
 
-        <!-- 1. Instruments row (above the boat) -->
-        <div class="sim-meters sim-dash-meters">
-          <div class="sim-meter-card">
-            <h5>Bootsnelheid</h5>
-            <div class="sim-meter-value" id="sim-meter-speed">0.0 kn</div>
-          </div>
-          <div class="sim-meter-card">
-            <h5>Helling</h5>
-            <div class="sim-meter-value" id="sim-meter-heel">0°</div>
-          </div>
-          <div class="sim-meter-card">
-            <h5>Windhoek</h5>
-            <div class="sim-meter-value" id="sim-meter-angle">45°</div>
-          </div>
-        </div>
-
-        <!-- 2. Boat (centre) + point-of-sail buttons (right) -->
+        <!-- Boat (centre) + floating instruments overlay + point-of-sail buttons -->
         <div class="sim-dash-stage">
-          <div class="simulator-viewport" id="simulator-viewport-container">
-            <!-- Rendered dynamically by windSimulator.js -->
+          <div class="sim-boat-wrap">
+            <!-- Instruments float over the top of the boat (HUD style) -->
+            <div class="sim-meters sim-dash-meters">
+              <div class="sim-meter-card">
+                <h5>Bootsnelheid</h5>
+                <div class="sim-meter-value" id="sim-meter-speed">0.0 kn</div>
+              </div>
+              <div class="sim-meter-card">
+                <h5>Helling</h5>
+                <div class="sim-meter-value" id="sim-meter-heel">0°</div>
+              </div>
+              <div class="sim-meter-card">
+                <h5>Windhoek</h5>
+                <div class="sim-meter-value" id="sim-meter-angle">45°</div>
+              </div>
+            </div>
+            <div class="simulator-viewport" id="simulator-viewport-container">
+              <!-- Rendered dynamically by windSimulator.js -->
+            </div>
           </div>
           <div id="sim-presets" class="sim-dash-presets">
             <button class="sim-preset btn-secondary" data-angle="0">In de wind (0°)</button>

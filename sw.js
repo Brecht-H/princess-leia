@@ -4,7 +4,7 @@
    so the full app shell + all flipbook plates are precached on install.
    ========================================================================== */
 
-const CACHE_VERSION = 'leia-v7';
+const CACHE_VERSION = 'leia-v8';
 const APP_SHELL = [
   './',
   './index.html',
@@ -32,6 +32,16 @@ const APP_SHELL = [
   './assets/flipbook/man_overboard.jpg',
   './assets/flipbook/points_of_sail.jpg',
   './assets/flipbook/docklines_springs.jpg',
+  // Per-knot step diagrams (verified CC, see knots/CREDITS.md)
+  './assets/flipbook/knots/paalsteek.jpg',
+  './assets/flipbook/knots/mastworp.jpg',
+  './assets/flipbook/knots/platteknoop.jpg',
+  './assets/flipbook/knots/rondtorn.jpg',
+  './assets/flipbook/knots/kikker.jpg',
+  './assets/flipbook/knots/achtknoop.jpg',
+  './assets/flipbook/knots/rolsteek.jpg',
+  './assets/flipbook/knots/schootsteek.jpg',
+  './assets/flipbook/knots/dubbele_schootsteek.jpg',
   // Day-at-sea storyboard frames
   './assets/day_at_sea/frame_001.png',
   './assets/day_at_sea/frame_002.png',
